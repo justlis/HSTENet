@@ -33,7 +33,7 @@ class NormLinear(nn.Module):
 
 class CSA(nn.Module):
     def __init__(self, inplanes, planes=1024):
-        super(TCNHead, self).__init__()
+        super(CSA, self).__init__()
 
         self.con1 = nn.Sequential(nn.AvgPool3d(kernel_size=(1,4,4),stride=(1,4,4)),nn.Conv3d(64,512,kernel_size=(1,2,2),stride=(1,2,2)))
         self.con2 = nn.Conv3d(128,512,kernel_size=(1,4,4),stride=(1,4,4))
