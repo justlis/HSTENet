@@ -180,9 +180,7 @@ class SLRModel(nn.Module):
                 loss += weight * self.loss['CTCLoss'](ret_dict["sequence_logits"].log_softmax(-1),
                                                       label.cpu().int(), ret_dict["feat_len"].cpu().int(),
                                                       label_lgt.cpu().int()).mean()
-                #loss +=  self.loss['CTCLoss'](ret_dict["res2"][0].log_softmax(-1),
-                #                                      label.cpu().int(), ret_dict["feat_len"].cpu().int(),
-                #                                      label_lgt.cpu().int()).mean()   
+
                 loss +=  self.loss['CTCLoss'](ret_dict["res2"][0].log_softmax(-1),
                                                       label.cpu().int(), ret_dict["feat_len"].cpu().int(),
                                                       label_lgt.cpu().int()).mean()    
@@ -196,12 +194,7 @@ class SLRModel(nn.Module):
                 loss += weight * self.loss['distillation'](ret_dict["conv_logits"],
                                                            ret_dict["sequence_logits"].detach(),
                                                            use_blank=False)
-                #####loss +=   self.loss['mse_loss'](ret_dict["res1"][0],
-                #                                           ret_dict["res1"][1].detach())
-                #loss +=   self.loss['mse_loss'](ret_dict["res1"][2],
-                              #                                                      ret_dict["res1"][3].detach())
-                #loss +=    self.loss['mse_loss'](ret_dict["res1"][4],
-                #                                           ret_dict["res1"][5].detach()) 
+
         return loss
 
     def criterion_init(self):
