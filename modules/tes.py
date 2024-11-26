@@ -15,18 +15,18 @@ class TemporalExtensionShift(nn.Module):
 
         self.in_channels = in_channels
         self.fold = self.in_channels // n_div
-        self.action_shift = nn.Conv1d(
+        self.exten_shift = nn.Conv1d(
                                     self.in_channels, self.in_channels,
                                     kernel_size=3, padding=2, groups=self.in_channels,dilation=2,
                                     bias=False)  
 
-        self.action_shift.weight.requires_grad = True
+        self.exten_shift.weight.requires_grad = True
 
-        self.action_shift.weight.data.zero_()
-        self.action_shift.weight.data[:self.fold, 0, 2] = 1 # shift left
-        self.action_shift.weight.data[self.fold: 2 * self.fold, 0, 0] = 1 # shift right  
+        self.exten_shift.weight.data.zero_()
+        self.exten_shift.weight.data[:self.fold, 0, 2] = 1 # shift left
+        self.exten_shift.weight.data[self.fold: 2 * self.fold, 0, 0] = 1 # shift right  
         if 2*self.fold < self.in_channels:
-            self.action_shift.weight.data[2 * self.fold:, 0, 1] = 1 # fixed
+            self.exten_shift.weight.data[2 * self.fold:, 0, 1] = 1 # fixed
 
 
 
@@ -35,7 +35,7 @@ class TemporalExtensionShift(nn.Module):
         n,c, t, h, w = x.size()
         x_shift = x.permute([0, 3, 4, 1, 2]) 
         x_shift = x_shift.contiguous().view(n*h*w, c, t)      
-        x_shift = self.action_shift(x_shift)  # (n_batch*h*w, c, n_segment)      
+        x_shift = self.exten_shift(x_shift)  # (n_batch*h*w, c, n_segment)      
         x_shift = x_shift.view(n, h, w, c, t)
         x_shift = x_shift.permute([0, 3, 4, 1, 2]) 
 
