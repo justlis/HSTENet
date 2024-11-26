@@ -17,7 +17,7 @@ class TemporalExtensionShift(nn.Module):
         self.fold = self.in_channels // n_div
         self.exten_shift = nn.Conv1d(
                                     self.in_channels, self.in_channels,
-                                    kernel_size=3, padding=2, groups=self.in_channels,dilation=2,
+                                    kernel_size=3, padding=3, groups=self.in_channels,dilation=3,
                                     bias=False)  
 
         self.exten_shift.weight.requires_grad = True
